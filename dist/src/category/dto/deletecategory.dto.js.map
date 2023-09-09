@@ -1,0 +1,1 @@
+{"version":3,"file":"deletecategory.dto.js","sourceRoot":"","sources":["../../../../src/category/dto/deletecategory.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,6CAA8C;AAC9C,qDAAkE;AAElE,MAAa,wBAAwB;CAUpC;AAVD,4DAUC;AADG;IAPC,IAAA,4BAAU,EAAC;QACR,OAAO,EAAE;YACL,SAAS,EAAE,OAAO;YAClB,YAAY,EAAE,0BAA0B;SAC3C;KACJ,CAAC;IACD,IAAA,qBAAW,GAAE;;+DACQ"}

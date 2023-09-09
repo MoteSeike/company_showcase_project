@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id    Int     @default(autoincrement()) @id
+  user_name  String?
+  email String  @unique
+  password String
+  delete_status Int
+  registration_date DateTime?
+  updated_date DateTime?
+  deleted_date DateTime?
+}
+
+model Category {
+  category_id    Int     @default(autoincrement()) @id
+  category_name  String @unique
+  delete_status Int
+  registration_date DateTime?
+  updated_date DateTime?
+  deleted_date DateTime?
+}
+
+model Feature {
+  feature_id    Int     @default(autoincrement()) @id
+  feature_name  String  @unique
+  price Float
+  category_id Int
+  delete_status Int
+  registration_date DateTime?
+  updated_date DateTime?
+  deleted_date DateTime?
+}
+
+model FeatureProject{
+   featureproject_id Int  @default(autoincrement()) @id
+   feature_id    Int 
+   project_id    Int 
+   delete_status Int
+}
+
+model Project {
+  project_id    Int     @default(autoincrement()) @id
+  project_name  String @unique
+  user_id Int
+  delete_status Int
+  registration_date DateTime?
+  updated_date DateTime?
+  deleted_date DateTime?
+}
+
+model Issue {
+  issuse_id    Int     @default(autoincrement()) @id
+  issuse_info String @unique
+  status String
+  user_id Int
+  project_id Int
+  delete_status Int
+  registration_date DateTime?
+  updated_date DateTime?
+  deleted_date DateTime?
+}
