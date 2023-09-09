@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindProjectByUserIdResponseDto, FindProjectResponseDto, ProjectProperty } from './dto/findprojectlist.dto';
 import { CreateProjectDto } from './dto/createproject.dto';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class ProjectService {

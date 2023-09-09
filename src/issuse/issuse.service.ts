@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindIssuseResponseByProjectIdDto, FindIssuseResponseDto, IssuseProperty } from './dto/findissuse.dto';
 import { CreateIssuseDto } from './dto/createissuse.dto';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()

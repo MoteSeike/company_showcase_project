@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FeatureProperty, FindFeatureResponseDto } from './dto/findfeature.dto';
 import { CreateFeatureDto } from './dto/createfeature.dto';
-import dayjs from 'dayjs';
+import *as dayjs from 'dayjs';
 
 @Injectable()
 export class FeatureService {
