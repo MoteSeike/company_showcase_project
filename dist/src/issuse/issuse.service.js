@@ -14,7 +14,7 @@ exports.IssuseService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const findissuse_dto_1 = require("./dto/findissuse.dto");
-const dayjs_1 = require("dayjs");
+const dayjs = require("dayjs");
 const swagger_1 = require("@nestjs/swagger");
 let IssuseService = IssuseService_1 = class IssuseService {
     constructor(prisma) {
@@ -148,7 +148,7 @@ let IssuseService = IssuseService_1 = class IssuseService {
                         issuse_info: data.issuse_info,
                         delete_status: 0,
                         status: data.status,
-                        registration_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                        registration_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                         user_id: Number(data.user_id),
                         project_id: Number(data.project_id)
                     },
@@ -198,7 +198,7 @@ let IssuseService = IssuseService_1 = class IssuseService {
                     issuse_info: data.issuse_info,
                     delete_status: 0,
                     status: data.status,
-                    updated_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                    updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                     user_id: Number(data.user_id),
                     project_id: Number(data.project_id)
                 }
@@ -255,7 +255,7 @@ let IssuseService = IssuseService_1 = class IssuseService {
                     issuse_info: data.issuse_info,
                     delete_status: 0,
                     status: data.status,
-                    updated_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                    updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                     user_id: Number(data.user_id),
                     project_id: Number(data.project_id)
                 }
@@ -309,7 +309,7 @@ let IssuseService = IssuseService_1 = class IssuseService {
                 where,
                 data: {
                     delete_status: 1,
-                    deleted_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss'))
+                    deleted_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
                 }
             });
         }

@@ -147,9 +147,8 @@ let UserService = UserService_1 = class UserService {
                 const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
                 let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
                 decryptedPassword += decipher.final('utf8');
-                this.logger.log(decryptedPassword);
                 const salt = await bcrypt.genSalt();
-                const hashpassword = await bcrypt.hash(data.password, salt);
+                const hashpassword = await bcrypt.hash(encryptionKey, salt);
                 const userresponse = await this.prisma.user.create({
                     data: {
                         user_name: data.user_name,
@@ -221,7 +220,13 @@ let UserService = UserService_1 = class UserService {
             where: { email: email, delete_status: 0 },
         });
         if (restoreuserdata) {
-            const isMatch = await bcrypt.compare(restoreuserdata.password, data.password);
+            const encryptionKey = constant_1.jwtConstants.secret;
+            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+            let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
+            decryptedPassword += decipher.final('utf8');
+            const salt = await bcrypt.genSalt();
+            const hashpassword = await bcrypt.hash(encryptionKey, salt);
+            const isMatch = await bcrypt.compare(restoreuserdata.password, hashpassword);
             if (!isMatch) {
                 throw new common_1.HttpException({
                     errorCode: "E1118",
@@ -236,8 +241,12 @@ let UserService = UserService_1 = class UserService {
             }, common_1.HttpStatus.NOT_FOUND);
         }
         try {
+            const encryptionKey = constant_1.jwtConstants.secret;
+            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+            let decryptedPassword = decipher.update(data.new_password, 'base64', 'utf8');
+            decryptedPassword += decipher.final('utf8');
             const salt = await bcrypt.genSalt();
-            const hashpassword = await bcrypt.hash(data.new_password, salt);
+            const hashpassword = await bcrypt.hash(encryptionKey, salt);
             const userdata = await this.prisma.user.update({
                 where: {
                     email: email
@@ -282,8 +291,12 @@ let UserService = UserService_1 = class UserService {
                     errorMessage: "Password and confirmpassword does not match!"
                 }, common_1.HttpStatus.NOT_FOUND);
             }
+            const encryptionKey = constant_1.jwtConstants.secret;
+            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+            let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
+            decryptedPassword += decipher.final('utf8');
             const salt = await bcrypt.genSalt();
-            const hashpassword = await bcrypt.hash(data.password, salt);
+            const hashpassword = await bcrypt.hash(decryptedPassword, salt);
             const userdata = await this.prisma.user.update({
                 where: {
                     email: email

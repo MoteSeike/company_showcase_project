@@ -28,12 +28,6 @@ __decorate([
             errorMessage: "Name is required."
         },
     }),
-    (0, class_validator_1.MaxLength)(70, {
-        context: {
-            errorCode: "E1000",
-            errorMessage: "Name can not more than 70 digits."
-        },
-    }),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "user_name", void 0);
@@ -71,12 +65,6 @@ __decorate([
             errorMessage: "Password must be at least 10 digits"
         },
     }),
-    (0, class_validator_1.MaxLength)(700, {
-        context: {
-            errorCode: "E1000",
-            errorMessage: "Password can not more than 700 digits"
-        },
-    }),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);
@@ -97,12 +85,6 @@ __decorate([
         context: {
             errorCode: "E1000",
             errorMessage: "Confirm Password must be at least 10 digits"
-        },
-    }),
-    (0, class_validator_1.MaxLength)(700, {
-        context: {
-            errorCode: "E1000",
-            errorMessage: "Confirm Password can not more than 700 digits"
         },
     }),
     (0, swagger_1.ApiProperty)(),

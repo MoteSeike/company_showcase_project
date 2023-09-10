@@ -14,7 +14,7 @@ exports.FeatureService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const findfeature_dto_1 = require("./dto/findfeature.dto");
-const dayjs_1 = require("dayjs");
+const dayjs = require("dayjs");
 let FeatureService = FeatureService_1 = class FeatureService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -90,7 +90,7 @@ let FeatureService = FeatureService_1 = class FeatureService {
                         feature_name: data.feature_name,
                         delete_status: 0,
                         price: data.price,
-                        registration_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                        registration_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                         category_id: Number(data.category_id)
                     },
                 });
@@ -134,7 +134,7 @@ let FeatureService = FeatureService_1 = class FeatureService {
                     feature_name: data.feature_name,
                     delete_status: 0,
                     price: data.price,
-                    updated_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                    updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                     category_id: Number(data.category_id)
                 }
             });
@@ -186,7 +186,7 @@ let FeatureService = FeatureService_1 = class FeatureService {
                     feature_name: data.feature_name,
                     delete_status: 0,
                     price: data.price,
-                    updated_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                    updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                     category_id: Number(data.category_id)
                 }
             });
@@ -235,7 +235,7 @@ let FeatureService = FeatureService_1 = class FeatureService {
                 where,
                 data: {
                     delete_status: 1,
-                    deleted_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss'))
+                    deleted_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
                 }
             });
         }

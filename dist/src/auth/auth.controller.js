@@ -16,8 +16,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const auth_guard_1 = require("./auth.guard");
-const swagger_1 = require("@nestjs/swagger");
 const luserogin_dto_1 = require("../user/dto/luserogin.dto");
 let AuthController = AuthController_1 = class AuthController {
     constructor(authService) {
@@ -26,12 +24,6 @@ let AuthController = AuthController_1 = class AuthController {
     }
     signIn(signInDto) {
         return this.authService.signIn(signInDto.email, signInDto.password);
-    }
-    getProfile(req) {
-        return req.user;
-    }
-    getHello(req) {
-        return req.user;
     }
     logout(req) {
         req.session.destroy();
@@ -47,22 +39,6 @@ __decorate([
     __metadata("design:paramtypes", [luserogin_dto_1.UserLoginDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signIn", null);
-__decorate([
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuards),
-    (0, common_1.Get)('profile'),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "getProfile", null);
-__decorate([
-    (0, common_1.Get)('protected'),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", String)
-], AuthController.prototype, "getHello", null);
 __decorate([
     (0, common_1.Get)('logout'),
     __param(0, (0, common_1.Req)()),

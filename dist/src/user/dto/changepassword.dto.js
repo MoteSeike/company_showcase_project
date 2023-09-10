@@ -34,12 +34,6 @@ __decorate([
             errorMessage: "Password must be at least 10 digits"
         },
     }),
-    (0, class_validator_1.MaxLength)(70, {
-        context: {
-            errorCode: "E1000",
-            errorMessage: "Password can not more than 70 digits"
-        },
-    }),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], ChangePasswordDto.prototype, "password", void 0);
@@ -62,12 +56,6 @@ __decorate([
             errorMessage: "New Password must be at least 10 digits"
         },
     }),
-    (0, class_validator_1.MaxLength)(70, {
-        context: {
-            errorCode: "E1000",
-            errorMessage: "New Password can not more than 70 digits"
-        },
-    }),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], ChangePasswordDto.prototype, "new_password", void 0);
@@ -88,12 +76,6 @@ __decorate([
         context: {
             errorCode: "E1000",
             errorMessage: "New Confirm Password must be at least 10 digits"
-        },
-    }),
-    (0, class_validator_1.MaxLength)(70, {
-        context: {
-            errorCode: "E1000",
-            errorMessage: "New Confirm Password can not more than 70 digits"
         },
     }),
     (0, swagger_1.ApiProperty)(),

@@ -14,7 +14,7 @@ exports.ProjectService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const findprojectlist_dto_1 = require("./dto/findprojectlist.dto");
-const dayjs_1 = require("dayjs");
+const dayjs = require("dayjs");
 let ProjectService = ProjectService_1 = class ProjectService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -131,7 +131,7 @@ let ProjectService = ProjectService_1 = class ProjectService {
                     data: {
                         project_name: data.project_name,
                         delete_status: 0,
-                        registration_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                        registration_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                         user_id: Number(data.user_id)
                     },
                 });
@@ -169,7 +169,7 @@ let ProjectService = ProjectService_1 = class ProjectService {
                 data: {
                     project_name: data.project_name,
                     delete_status: 0,
-                    updated_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                    updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                     user_id: Number(data.user_id)
                 }
             });
@@ -215,7 +215,7 @@ let ProjectService = ProjectService_1 = class ProjectService {
                 data: {
                     project_name: data.project_name,
                     delete_status: 0,
-                    updated_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss')),
+                    updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
                     user_id: Number(data.user_id)
                 }
             });
@@ -259,7 +259,7 @@ let ProjectService = ProjectService_1 = class ProjectService {
                 where,
                 data: {
                     delete_status: 1,
-                    deleted_date: new Date((0, dayjs_1.default)().format('YYYY-MM-DD HH:mm:ss'))
+                    deleted_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
                 }
             });
         }

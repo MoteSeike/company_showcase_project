@@ -9,16 +9,16 @@ import * as dayjs from 'dayjs';
 export class ProjectService {
     constructor(private prisma: PrismaService) { }
     private readonly logger = new Logger(ProjectService.name);
-    
+
     async findAllProjectByUserId(
         user_id: string,
         params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.ProjectWhereUniqueInput;
-        where?: Prisma.ProjectWhereInput;
-        orderBy?: Prisma.ProjectOrderByWithRelationInput;
-    }): Promise<FindProjectByUserIdResponseDto> {
+            skip?: number;
+            take?: number;
+            cursor?: Prisma.ProjectWhereUniqueInput;
+            where?: Prisma.ProjectWhereInput;
+            orderBy?: Prisma.ProjectOrderByWithRelationInput;
+        }): Promise<FindProjectByUserIdResponseDto> {
         const { skip, take, cursor, orderBy } = params;
         try {
             const userdata = await this.prisma.user.findUnique({
@@ -30,8 +30,8 @@ export class ProjectService {
 
             const projectdata = await this.prisma.project.findMany(
                 {
-                    where:{
-                        user_id:Number(user_id)
+                    where: {
+                        user_id: Number(user_id)
                     },
                     skip,
                     take,
@@ -39,18 +39,18 @@ export class ProjectService {
                     orderBy,
                 }
             );
-              const responseprojectdto :ProjectProperty[]=projectdata.map((a) => {
+            const responseprojectdto: ProjectProperty[] = projectdata.map((a) => {
                 const projectdto = new ProjectProperty();
-                   projectdto.project_id = a.project_id;
-                   projectdto.project_name = a.project_name;
-                    return projectdto;
-                });
-             
-                const responsedata=new FindProjectByUserIdResponseDto;
-                responsedata.user_id=user_id,
-                responsedata.user_name=userdata.user_name,
-                responsedata.project_list=responseprojectdto
-                return responsedata;
+                projectdto.project_id = a.project_id;
+                projectdto.project_name = a.project_name;
+                return projectdto;
+            });
+
+            const responsedata = new FindProjectByUserIdResponseDto;
+            responsedata.user_id = user_id,
+                responsedata.user_name = userdata.user_name,
+                responsedata.project_list = responseprojectdto
+            return responsedata;
         }
         catch (err) {
             this.logger.error("Error:" + err);
@@ -69,12 +69,12 @@ export class ProjectService {
 
     async findAllProject(
         params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.ProjectWhereUniqueInput;
-        where?: Prisma.ProjectWhereInput;
-        orderBy?: Prisma.ProjectOrderByWithRelationInput;
-    }): Promise<FindProjectResponseDto[]> {
+            skip?: number;
+            take?: number;
+            cursor?: Prisma.ProjectWhereUniqueInput;
+            where?: Prisma.ProjectWhereInput;
+            orderBy?: Prisma.ProjectOrderByWithRelationInput;
+        }): Promise<FindProjectResponseDto[]> {
         const { skip, take, cursor, where, orderBy } = params;
         try {
             const projectdata = await this.prisma.project.findMany(
@@ -86,17 +86,17 @@ export class ProjectService {
                     orderBy,
                 }
             );
-          
-              const responseprojectdto :FindProjectResponseDto[]=projectdata.map((a) => {
-                   const projectdto = new FindProjectResponseDto();
-                   projectdto.project_id = a.project_id;
-                   projectdto.project_name = a.project_name;
-                   projectdto.user_id=a.user_id;
-                   this.getUserData(a.user_id).then(res=>projectdto.project_name=res);
-                    return projectdto;
-                });
-             
-                return responseprojectdto;
+
+            const responseprojectdto: FindProjectResponseDto[] = projectdata.map((a) => {
+                const projectdto = new FindProjectResponseDto();
+                projectdto.project_id = a.project_id;
+                projectdto.project_name = a.project_name;
+                projectdto.user_id = a.user_id;
+                this.getUserData(a.user_id).then(res => projectdto.project_name = res);
+                return projectdto;
+            });
+
+            return responseprojectdto;
         }
         catch (err) {
             this.logger.error("Error:" + err);
@@ -112,19 +112,19 @@ export class ProjectService {
         }
 
     }
-    async getUserData(user_id:number):Promise<string>{
-        const userdata =await this.prisma.user.findUnique({
+    async getUserData(user_id: number): Promise<string> {
+        const userdata = await this.prisma.user.findUnique({
             where: {
                 user_id: Number(user_id),
                 delete_status: 0
             },
         });
-      return userdata.user_name;
+        return userdata.user_name;
     }
     async createProject(data: CreateProjectDto): Promise<FindProjectResponseDto> {
         try {
             const projectdata = await this.prisma.project.findUnique({
-                where: { project_name: data.project_name},
+                where: { project_name: data.project_name },
             });
             const restoreuserdata = await this.prisma.project.findUnique({
                 where: { project_name: data.project_name, delete_status: 1 },
@@ -150,7 +150,7 @@ export class ProjectService {
                         project_name: data.project_name,
                         delete_status: 0,
                         registration_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
-                        user_id:Number(data.user_id)
+                        user_id: Number(data.user_id)
                     },
                 });
                 const userdata = await this.prisma.user.findUnique({
@@ -160,9 +160,9 @@ export class ProjectService {
                     },
                 });
                 projectdto.user_id = projectresponse.user_id,
-                projectdto.user_name=userdata.user_name,
-                projectdto.project_id=projectresponse.project_id,
-                projectdto.project_name=projectresponse.project_name
+                    projectdto.user_name = userdata.user_name,
+                    projectdto.project_id = projectresponse.project_id,
+                    projectdto.project_name = projectresponse.project_name
                 return projectdto;
             }
         }
@@ -193,10 +193,10 @@ export class ProjectService {
                     project_name: data.project_name,
                     delete_status: 0,
                     updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
-                    user_id:Number(data.user_id)
+                    user_id: Number(data.user_id)
                 }
             });
-            if (!projectdata ) {
+            if (!projectdata) {
                 throw new HttpException({
                     errorCode: "E1117",
                     errorMessage: "Project Name does not exist!"
@@ -212,10 +212,10 @@ export class ProjectService {
                 });
                 return (
                     {
-                        user_id:projectdata.user_id,
-                        user_name:userdata.user_name,
-                        project_id:projectdata.project_id,
-                        project_name:projectdata.project_name
+                        user_id: projectdata.user_id,
+                        user_name: userdata.user_name,
+                        project_id: projectdata.project_id,
+                        project_name: projectdata.project_name
                     }
                 );
             }
@@ -247,10 +247,10 @@ export class ProjectService {
                     project_name: data.project_name,
                     delete_status: 0,
                     updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
-                    user_id:Number(data.user_id)
+                    user_id: Number(data.user_id)
                 }
             });
-            if (!projectdata ) {
+            if (!projectdata) {
                 throw new HttpException({
                     errorCode: "E1117",
                     errorMessage: "Project Name does not exist!"
@@ -266,10 +266,10 @@ export class ProjectService {
                 });
                 return (
                     {
-                        user_id:projectdata.user_id,
-                        user_name:userdata.user_name,
-                        project_id:projectdata.project_id,
-                        project_name:projectdata.project_name
+                        user_id: projectdata.user_id,
+                        user_name: userdata.user_name,
+                        project_id: projectdata.project_id,
+                        project_name: projectdata.project_name
                     }
                 );
             }
