@@ -2,8 +2,6 @@ import { Injectable, Logger, NotAcceptableException, UnauthorizedException } fro
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
-import { jwtConstants } from './constant';
-import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -18,12 +16,12 @@ export class AuthService {
                 errorMessage: 'Unauthorized user.'
             });
         }
-        const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
-        const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
-        let decryptedPassword = decipher.update(pass, 'base64', 'utf8');
-        decryptedPassword += decipher.final('utf8');
+        // const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
+        // const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+        // let decryptedPassword = decipher.update(pass, 'base64', 'utf8');
+        // decryptedPassword += decipher.final('utf8');
 
-        const isMatch = await bcrypt.compare(decryptedPassword, user?.password);
+        const isMatch = await bcrypt.compare(pass, user?.password);
         if (!isMatch) {
             throw new UnauthorizedException({
                 errorCode: 'E1116',
