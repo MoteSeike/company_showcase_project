@@ -6,6 +6,7 @@ import { CheckUserResponseDto, FindUserResponseDto } from './dto/finduser.dto';
 import { CreateUserDto } from './dto/createuser.dto';
 import * as dayjs from 'dayjs'
 import { ChangePasswordDto } from './dto/changepassword.dto';
+import * as crypto from 'crypto';
 import { jwtConstants } from 'src/auth/constant';
 
 export type User = any;
@@ -159,13 +160,13 @@ export class UserService {
                     HttpStatus.NOT_FOUND);
             }
             else {
-                // const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
-                // const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
-                // let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
-                // decryptedPassword += decipher.final('utf8');
+                const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
+                const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+                let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
+                decryptedPassword += decipher.final('utf8');
 
                 const salt = await bcrypt.genSalt();
-                const hashpassword = await bcrypt.hash(data.password, salt);
+                const hashpassword = await bcrypt.hash(encryptionKey, salt);
                 const userresponse = await this.prisma.user.create({
                     data: {
                         user_name: data.user_name,
@@ -249,13 +250,13 @@ export class UserService {
             where: { email: email, delete_status: 0 },
         });
         if (restoreuserdata) {
-            // const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
-            // const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
-            // let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
-            // decryptedPassword += decipher.final('utf8');
+            const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
+            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+            let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
+            decryptedPassword += decipher.final('utf8');
 
             const salt = await bcrypt.genSalt();
-            const hashpassword = await bcrypt.hash(data.new_password, salt);
+            const hashpassword = await bcrypt.hash(encryptionKey, salt);
             const isMatch = await bcrypt.compare(restoreuserdata.password, hashpassword);
             if (!isMatch) {
                 throw new HttpException({
@@ -273,12 +274,12 @@ export class UserService {
                 HttpStatus.NOT_FOUND);
         }
         try {
-            // const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
-            // const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
-            // let decryptedPassword = decipher.update(data.new_password, 'base64', 'utf8');
-            // decryptedPassword += decipher.final('utf8');
+            const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
+            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+            let decryptedPassword = decipher.update(data.new_password, 'base64', 'utf8');
+            decryptedPassword += decipher.final('utf8');
             const salt = await bcrypt.genSalt();
-            const hashpassword = await bcrypt.hash(data.new_password, salt);
+            const hashpassword = await bcrypt.hash(encryptionKey, salt);
             const userdata = await this.prisma.user.update({
                 where: {
                     email: email
@@ -328,13 +329,13 @@ export class UserService {
                 },
                     HttpStatus.NOT_FOUND);
             }
-            // const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
-            // const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
-            // let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
-            // decryptedPassword += decipher.final('utf8');
+            const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
+            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+            let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
+            decryptedPassword += decipher.final('utf8');
 
             const salt = await bcrypt.genSalt();
-            const hashpassword = await bcrypt.hash(data.password, salt);
+            const hashpassword = await bcrypt.hash(decryptedPassword, salt);
             const userdata = await this.prisma.user.update({
                 where: {
                     email: email
