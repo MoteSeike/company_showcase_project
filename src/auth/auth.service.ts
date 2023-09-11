@@ -1,7 +1,6 @@
 import { Injectable, Logger, NotAcceptableException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
-import * as bcrypt from 'bcrypt';
 import { jwtConstants } from './constant';
 import * as crypto from 'crypto';
 
@@ -23,8 +22,8 @@ export class AuthService {
         let decryptedPassword = decipher.update(pass, 'base64', 'utf8');
         decryptedPassword += decipher.final('utf8');
 
-        const isMatch = await bcrypt.compare(decryptedPassword, user?.password);
-        if (!isMatch) {
+        // const isMatch = await bcrypt.compare(decryptedPassword, user?.password);
+        if (decryptedPassword!==user?.password) {
             throw new UnauthorizedException({
                 errorCode: 'E1116',
                 errorMessage: 'Invalid Password.'
@@ -38,14 +37,14 @@ export class AuthService {
 
     async validateUser(email: string, password: string): Promise<any> {
         const user = await this.usersService.findUserByEmail(email);
-        const passwordValid = await bcrypt.compare(password, user.password)
+        // const passwordValid = await bcrypt.compare(password, user.password)
         if (!user) {
             throw new NotAcceptableException({
                 errorCode: 'E1118',
                 errorMessage: 'Unacceptable exception.'
             });
         }
-        if (user && passwordValid) {
+        if (user && (password===user.password)) {
             return {
                 user_id: user.email,
                 user_name: user.user_id
