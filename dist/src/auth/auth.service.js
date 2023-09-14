@@ -14,7 +14,6 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
-const bcrypt = require("bcrypt");
 const constant_1 = require("./constant");
 const crypto = require("crypto");
 let AuthService = AuthService_1 = class AuthService {
@@ -35,8 +34,7 @@ let AuthService = AuthService_1 = class AuthService {
         const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
         let decryptedPassword = decipher.update(pass, 'base64', 'utf8');
         decryptedPassword += decipher.final('utf8');
-        const isMatch = await bcrypt.compare(decryptedPassword, user?.password);
-        if (!isMatch) {
+        if (decryptedPassword !== user?.password) {
             throw new common_1.UnauthorizedException({
                 errorCode: 'E1116',
                 errorMessage: 'Invalid Password.'
@@ -49,14 +47,13 @@ let AuthService = AuthService_1 = class AuthService {
     }
     async validateUser(email, password) {
         const user = await this.usersService.findUserByEmail(email);
-        const passwordValid = await bcrypt.compare(password, user.password);
         if (!user) {
             throw new common_1.NotAcceptableException({
                 errorCode: 'E1118',
                 errorMessage: 'Unacceptable exception.'
             });
         }
-        if (user && passwordValid) {
+        if (user && (password === user.password)) {
             return {
                 user_id: user.email,
                 user_name: user.user_id

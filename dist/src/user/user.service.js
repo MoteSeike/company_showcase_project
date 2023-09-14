@@ -12,7 +12,6 @@ var UserService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../prisma/prisma.service");
 const finduser_dto_1 = require("./dto/finduser.dto");
 const dayjs = require("dayjs");
@@ -147,13 +146,11 @@ let UserService = UserService_1 = class UserService {
                 const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
                 let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
                 decryptedPassword += decipher.final('utf8');
-                const salt = await bcrypt.genSalt();
-                const hashpassword = await bcrypt.hash(encryptionKey, salt);
                 const userresponse = await this.prisma.user.create({
                     data: {
                         user_name: data.user_name,
                         email: data.email,
-                        password: hashpassword,
+                        password: decryptedPassword,
                         delete_status: 0,
                         registration_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
                     },
@@ -224,10 +221,7 @@ let UserService = UserService_1 = class UserService {
             const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
             let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
             decryptedPassword += decipher.final('utf8');
-            const salt = await bcrypt.genSalt();
-            const hashpassword = await bcrypt.hash(encryptionKey, salt);
-            const isMatch = await bcrypt.compare(restoreuserdata.password, hashpassword);
-            if (!isMatch) {
+            if (decryptedPassword !== restoreuserdata.password) {
                 throw new common_1.HttpException({
                     errorCode: "E1118",
                     errorMessage: "Invalid Password"
@@ -245,14 +239,12 @@ let UserService = UserService_1 = class UserService {
             const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
             let decryptedPassword = decipher.update(data.new_password, 'base64', 'utf8');
             decryptedPassword += decipher.final('utf8');
-            const salt = await bcrypt.genSalt();
-            const hashpassword = await bcrypt.hash(encryptionKey, salt);
             const userdata = await this.prisma.user.update({
                 where: {
                     email: email
                 },
                 data: {
-                    password: hashpassword,
+                    password: decryptedPassword,
                     updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
                 }
             });
@@ -295,15 +287,13 @@ let UserService = UserService_1 = class UserService {
             const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
             let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
             decryptedPassword += decipher.final('utf8');
-            const salt = await bcrypt.genSalt();
-            const hashpassword = await bcrypt.hash(decryptedPassword, salt);
             const userdata = await this.prisma.user.update({
                 where: {
                     email: email
                 },
                 data: {
                     email: data.email,
-                    password: hashpassword,
+                    password: decryptedPassword,
                     delete_status: 0,
                     updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
                 }
