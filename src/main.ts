@@ -20,6 +20,6 @@ async function bootstrap() {
 
   app.use(passport.initialize())
   await app.useGlobalPipes(new ValidatePipe());
-  await app.listen(8085);
+  await app.listen(3001);
 }
 bootstrap();
