@@ -20,7 +20,11 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup('api', app, document, { customSiteTitle: "Student Register Backend", });
     app.use(passport.initialize());
     await app.useGlobalPipes(new ValidatePipe_1.ValidatePipe());
+<<<<<<< HEAD
     await app.listen(3001);
+=======
+    await app.listen(8085);
+>>>>>>> f0b0a5e8c655ffb86e4d9a7565a1975ef51467f6
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
