@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as passport from "passport";
 import { ValidatePipe } from 'lib/ValidatePipe';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,6 +21,8 @@ async function bootstrap() {
 
   app.use(passport.initialize())
   await app.useGlobalPipes(new ValidatePipe());
-  await app.listen(3001);
+  const port=3001;
+  await app.listen(port);
+  Logger.debug(`Application common listen port ${port} `)
 }
 bootstrap();

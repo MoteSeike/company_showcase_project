@@ -5,6 +5,7 @@ const app_module_1 = require("./app.module");
 const swagger_1 = require("@nestjs/swagger");
 const passport = require("passport");
 const ValidatePipe_1 = require("../lib/ValidatePipe");
+const common_1 = require("@nestjs/common");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
@@ -20,11 +21,9 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup('api', app, document, { customSiteTitle: "Student Register Backend", });
     app.use(passport.initialize());
     await app.useGlobalPipes(new ValidatePipe_1.ValidatePipe());
-<<<<<<< HEAD
-    await app.listen(3001);
-=======
-    await app.listen(8085);
->>>>>>> f0b0a5e8c655ffb86e4d9a7565a1975ef51467f6
+    const port = 3001;
+    await app.listen(port);
+    common_1.Logger.debug(`Application common listen port ${port} `);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
