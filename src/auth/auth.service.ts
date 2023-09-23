@@ -1,8 +1,8 @@
 import { Injectable, Logger, NotAcceptableException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
-import { jwtConstants } from './constant';
 import * as crypto from 'crypto';
+import { jwtConstants } from './constant';
 
 @Injectable()
 export class AuthService {
@@ -17,19 +17,20 @@ export class AuthService {
                 errorMessage: 'Unauthorized user.'
             });
         }
-        const encryptionKey = jwtConstants.secret; // Same secret key used on the client-side
-        const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+        const ENC = jwtConstants.secret;
+        const IV = jwtConstants.iv;
+        const ALGO = jwtConstants.algo;
+        const decipher = crypto.createDecipheriv(ALGO, ENC, IV);
         let decryptedPassword = decipher.update(pass, 'base64', 'utf8');
-        decryptedPassword += decipher.final('utf8');
+        decryptedPassword+= decipher.final('utf8');
 
-        // const isMatch = await bcrypt.compare(decryptedPassword, user?.password);
-        if (decryptedPassword!==user?.password) {
+        if (decryptedPassword.toString() !== user?.password) {
             throw new UnauthorizedException({
                 errorCode: 'E1116',
                 errorMessage: 'Invalid Password.'
             });
         }
-        const payload = { email: user.email, sub: user.user_id};
+        const payload = { email: user.email, sub: user.user_id };
         return {
             access_token: await this.jwtService.signAsync(payload),
         };
@@ -37,14 +38,13 @@ export class AuthService {
 
     async validateUser(email: string, password: string): Promise<any> {
         const user = await this.usersService.findUserByEmail(email);
-        // const passwordValid = await bcrypt.compare(password, user.password)
         if (!user) {
             throw new NotAcceptableException({
                 errorCode: 'E1118',
                 errorMessage: 'Unacceptable exception.'
             });
         }
-        if (user && (password===user.password)) {
+        if (user && (password === user.password)) {
             return {
                 user_id: user.email,
                 user_name: user.user_id

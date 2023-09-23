@@ -133,6 +133,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], IssuseController.prototype, "deleteFeature", null);
 exports.IssuseController = IssuseController = IssuseController_1 = __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Controller)('api/v1/issuse'),
     __metadata("design:paramtypes", [issuse_service_1.IssuseService])
 ], IssuseController);

@@ -1,11 +1,12 @@
 import { Body, Controller, Get, HttpCode, Logger, Param, UseGuards,Post, Put, Delete } from '@nestjs/common';
 import { IssuseService } from './issuse.service';
 import { FindIssuseResponseByProjectIdDto, FindIssuseResponseDto } from './dto/findissuse.dto';
-import { ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
 import { AuthGuards } from 'src/auth/auth.guard';
 import { CreateIssuseDto } from './dto/createissuse.dto';
 import { UpdateIssuseDto } from './dto/updateissuse.dto';
 
+@ApiBearerAuth()
 @Controller('api/v1/issuse')
 export class IssuseController {
     constructor(private readonly projectService: IssuseService) { }

@@ -11,7 +11,7 @@ export declare class UserController {
     findUserAll(): Promise<FindUserResponseDto[]>;
     createUser(user: CreateUserDto): Promise<any>;
     updateUser(userId: string, user: UpdateUserDto): Promise<FindUserResponseDto>;
-    changeUserPassword(email: string, user: ChangePasswordDto): Promise<boolean>;
+    changeUserPassword(email: string, user: ChangePasswordDto): Promise<FindUserResponseDto>;
     restoreUserAccount(email: string, user: CreateUserDto): Promise<boolean>;
     deleteUser(user_id: string): Promise<any>;
 }

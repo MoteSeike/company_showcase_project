@@ -14,8 +14,8 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
-const constant_1 = require("./constant");
 const crypto = require("crypto");
+const constant_1 = require("./constant");
 let AuthService = AuthService_1 = class AuthService {
     constructor(usersService, jwtService) {
         this.usersService = usersService;
@@ -30,11 +30,13 @@ let AuthService = AuthService_1 = class AuthService {
                 errorMessage: 'Unauthorized user.'
             });
         }
-        const encryptionKey = constant_1.jwtConstants.secret;
-        const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+        const ENC = constant_1.jwtConstants.secret;
+        const IV = constant_1.jwtConstants.iv;
+        const ALGO = constant_1.jwtConstants.algo;
+        const decipher = crypto.createDecipheriv(ALGO, ENC, IV);
         let decryptedPassword = decipher.update(pass, 'base64', 'utf8');
         decryptedPassword += decipher.final('utf8');
-        if (decryptedPassword !== user?.password) {
+        if (decryptedPassword.toString() !== user?.password) {
             throw new common_1.UnauthorizedException({
                 errorCode: 'E1116',
                 errorMessage: 'Invalid Password.'

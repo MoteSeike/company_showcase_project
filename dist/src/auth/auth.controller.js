@@ -17,6 +17,9 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const luserogin_dto_1 = require("../user/dto/luserogin.dto");
+const constant_1 = require("./constant");
+const crypto = require("crypto");
+const userpasswordencerypt_dto_1 = require("../user/dto/userpasswordencerypt.dto");
 let AuthController = AuthController_1 = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -25,6 +28,15 @@ let AuthController = AuthController_1 = class AuthController {
     signIn(signInDto) {
         return this.authService.signIn(signInDto.email, signInDto.password);
     }
+    encryptPassword(encryptPassword) {
+        const IV = constant_1.jwtConstants.iv;
+        const ENC = constant_1.jwtConstants.secret;
+        const ALGO = constant_1.jwtConstants.algo;
+        const cipher = crypto.createCipheriv(ALGO, ENC, IV);
+        let encrypted = cipher.update(encryptPassword.password, 'utf8', 'base64');
+        encrypted += cipher.final('base64');
+        return encrypted;
+    }
     logout(req) {
         req.session.destroy();
         return { msg: 'The user session has ended' };
@@ -32,13 +44,21 @@ let AuthController = AuthController_1 = class AuthController {
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, common_1.HttpCode)(201),
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [luserogin_dto_1.UserLoginDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signIn", null);
+__decorate([
+    (0, common_1.HttpCode)(201),
+    (0, common_1.Post)('encryptPassword'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [userpasswordencerypt_dto_1.UserPasswordEncryptDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "encryptPassword", null);
 __decorate([
     (0, common_1.Get)('logout'),
     __param(0, (0, common_1.Req)()),

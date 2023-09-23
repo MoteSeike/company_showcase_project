@@ -52,7 +52,7 @@ export class UserController {
     @ApiNotFoundResponse()
     @ApiInternalServerErrorResponse()
     async createUser(@Body() user: CreateUserDto): Promise<any> {
-        return this.userService.createUser(user);
+        return  this.userService.createUser(user);
     }
 
     @UseGuards(AuthGuards)
@@ -71,16 +71,11 @@ export class UserController {
     
     @Put('changepassword/:email')
     @HttpCode(200)
-    async changeUserPassword(@Param('email') email: string, @Body() user: ChangePasswordDto): Promise<boolean> {
-        const data=this.userService.changeUserPassword(
+    async changeUserPassword(@Param('email') email: string, @Body() user: ChangePasswordDto): Promise<FindUserResponseDto> {
+        return this.userService.changeUserPassword(
            email,
            user
         );
-        if(data)
-        {
-            return true;
-        }
-        return false;
     }
 
     @Put('restoreaccount/:email')

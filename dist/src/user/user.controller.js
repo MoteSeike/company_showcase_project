@@ -44,11 +44,7 @@ let UserController = UserController_1 = class UserController {
         });
     }
     async changeUserPassword(email, user) {
-        const data = this.userService.changeUserPassword(email, user);
-        if (data) {
-            return true;
-        }
-        return false;
+        return this.userService.changeUserPassword(email, user);
     }
     async restoreUserAccount(email, user) {
         const data = this.userService.restoreAccount(email, user);

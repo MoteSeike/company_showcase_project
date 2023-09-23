@@ -142,15 +142,17 @@ let UserService = UserService_1 = class UserService {
                 }, common_1.HttpStatus.NOT_FOUND);
             }
             else {
-                const encryptionKey = constant_1.jwtConstants.secret;
-                const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+                const ENC = constant_1.jwtConstants.secret;
+                const IV = constant_1.jwtConstants.iv;
+                const ALGO = constant_1.jwtConstants.algo;
+                const decipher = crypto.createDecipheriv(ALGO, ENC, IV);
                 let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
                 decryptedPassword += decipher.final('utf8');
                 const userresponse = await this.prisma.user.create({
                     data: {
                         user_name: data.user_name,
                         email: data.email,
-                        password: decryptedPassword,
+                        password: decryptedPassword.toString(),
                         delete_status: 0,
                         registration_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
                     },
@@ -217,49 +219,61 @@ let UserService = UserService_1 = class UserService {
             where: { email: email, delete_status: 0 },
         });
         if (restoreuserdata) {
-            const encryptionKey = constant_1.jwtConstants.secret;
-            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+            const ENC = constant_1.jwtConstants.secret;
+            const IV = constant_1.jwtConstants.iv;
+            const ALGO = constant_1.jwtConstants.algo;
+            const decipher = crypto.createDecipheriv(ALGO, ENC, IV);
             let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
             decryptedPassword += decipher.final('utf8');
-            if (decryptedPassword !== restoreuserdata.password) {
+            if (decryptedPassword.toString() !== restoreuserdata.password) {
                 throw new common_1.HttpException({
                     errorCode: "E1118",
                     errorMessage: "Invalid Password"
                 }, common_1.HttpStatus.NOT_FOUND);
             }
         }
-        if (data?.new_password !== data?.new_confirm_password) {
+        else {
             throw new common_1.HttpException({
-                errorCode: "E1116",
-                errorMessage: "New Password and new confirmpassword does not match!"
+                errorCode: "E1117",
+                errorMessage: "User does not exist!"
             }, common_1.HttpStatus.NOT_FOUND);
         }
         try {
-            const encryptionKey = constant_1.jwtConstants.secret;
-            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
-            let decryptedPassword = decipher.update(data.new_password, 'base64', 'utf8');
-            decryptedPassword += decipher.final('utf8');
-            const userdata = await this.prisma.user.update({
-                where: {
-                    email: email
-                },
-                data: {
-                    password: decryptedPassword,
-                    updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
+            if (data?.new_password === data?.new_confirm_password) {
+                const ENC = constant_1.jwtConstants.secret;
+                const IV = constant_1.jwtConstants.iv;
+                const ALGO = constant_1.jwtConstants.algo;
+                const decipher = crypto.createDecipheriv(ALGO, ENC, IV);
+                let decryptedPassword = decipher.update(data.new_password, 'base64', 'utf8');
+                decryptedPassword += decipher.final('utf8');
+                const userdata = await this.prisma.user.update({
+                    where: {
+                        email: email
+                    },
+                    data: {
+                        password: decryptedPassword.toString(),
+                        updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
+                    }
+                });
+                if (!userdata) {
+                    throw new common_1.HttpException({
+                        errorCode: "E1117",
+                        errorMessage: "User account does not exist!"
+                    }, common_1.HttpStatus.NOT_FOUND);
                 }
-            });
-            if (!userdata) {
-                throw new common_1.HttpException({
-                    errorCode: "E1117",
-                    errorMessage: "User account does not exist!"
-                }, common_1.HttpStatus.NOT_FOUND);
+                else {
+                    return ({
+                        user_id: userdata.user_id,
+                        user_name: userdata.user_name,
+                        email: userdata.email,
+                    });
+                }
             }
             else {
-                return ({
-                    user_id: userdata.user_id,
-                    user_name: userdata.user_name,
-                    email: userdata.email,
-                });
+                throw new common_1.HttpException({
+                    errorCode: "E1118",
+                    errorMessage: "New Password and new confirmpassword does not match!"
+                }, common_1.HttpStatus.NOT_FOUND);
             }
         }
         catch (err) {
@@ -283,8 +297,10 @@ let UserService = UserService_1 = class UserService {
                     errorMessage: "Password and confirmpassword does not match!"
                 }, common_1.HttpStatus.NOT_FOUND);
             }
-            const encryptionKey = constant_1.jwtConstants.secret;
-            const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
+            const ENC = constant_1.jwtConstants.secret;
+            const IV = constant_1.jwtConstants.iv;
+            const ALGO = constant_1.jwtConstants.algo;
+            const decipher = crypto.createDecipheriv(ALGO, ENC, IV);
             let decryptedPassword = decipher.update(data.password, 'base64', 'utf8');
             decryptedPassword += decipher.final('utf8');
             const userdata = await this.prisma.user.update({
@@ -293,7 +309,7 @@ let UserService = UserService_1 = class UserService {
                 },
                 data: {
                     email: data.email,
-                    password: decryptedPassword,
+                    password: decryptedPassword.toString(),
                     delete_status: 0,
                     updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss'))
                 }
