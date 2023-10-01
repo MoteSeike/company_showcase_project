@@ -110,7 +110,7 @@ export class IssuseService {
             );
             const responseissusedto: FindIssuseResponseDto[] = issusedata.map((a) => {
                 const issusedto = new FindIssuseResponseDto();
-                issusedto.issuse_id = a.issuse_id;
+                issusedto.issue_id = a.issuse_id;
                 issusedto.issue_info = a.issuse_info;
                 issusedto.status = a.status;
                 issusedto.user_id = a.user_id;
@@ -184,7 +184,7 @@ export class IssuseService {
                         delete_status: 0
                     },
                 });
-                issusedto.issuse_id = issuseresponse.issuse_id,
+                issusedto.issue_id = issuseresponse.issuse_id,
                     issusedto.project_id = issuseresponse.project_id,
                     issusedto.issue_info = issuseresponse.issuse_info,
                     issusedto.status = issuseresponse.status,
@@ -249,7 +249,7 @@ export class IssuseService {
                 });
                 return (
                     {
-                        issuse_id: issusedata.issuse_id,
+                        issue_id: issusedata.issuse_id,
                         project_id: issusedata.project_id,
                         project_name:projectdata.project_name,
                         issue_info: issusedata.issuse_info,
@@ -313,7 +313,7 @@ export class IssuseService {
                 });
                 return (
                     {
-                        issuse_id: issusedata.issuse_id,
+                        issue_id: issusedata.issuse_id,
                         project_id: issusedata.project_id,
                         project_name:projectdata.project_name,
                         issue_info: issusedata.issuse_info,

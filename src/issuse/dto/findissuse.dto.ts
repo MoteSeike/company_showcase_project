@@ -109,7 +109,7 @@ export class IssuseProperty
 export class FindIssuseResponseDto
 {
     @ApiProperty()
-    issuse_id:number;
+    issue_id:number;
 
     @ApiProperty()
     issue_info:string;
