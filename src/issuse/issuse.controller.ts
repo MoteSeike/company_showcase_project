@@ -30,12 +30,12 @@ export class IssuseController {
         type: FindIssuseResponseDto
     })
     @HttpCode(200)
-    async findAllIssuse(): Promise<FindIssuseResponseDto[]> {
+    async findAllIssue(): Promise<FindIssuseResponseDto[]> {
         return this.projectService.findAllIssuse({});
     }
 
 
-    @Post('register/issuseinfo')
+    @Post('register/issueinfo')
     @UseGuards(AuthGuards)
     @HttpCode(201)
     @ApiOkResponse({
@@ -53,9 +53,9 @@ export class IssuseController {
         description: 'Success',
         type: FindIssuseResponseDto
     })
-    @Put('update/issuseinfo/:issuse_id')
+    @Put('update/issueinfo/:issue_id')
     @HttpCode(200)
-    async updateProject(@Param('issuse_id') issuse_id: string, @Body() issuse: UpdateIssueDto): Promise<FindIssuseResponseDto> {
+    async updateProject(@Param('issue_id') issuse_id: string, @Body() issuse: UpdateIssueDto): Promise<FindIssuseResponseDto> {
         return this.projectService.updateIssuse({
             where: { issuse_id: Number(issuse_id) },
             data: issuse,
@@ -67,9 +67,9 @@ export class IssuseController {
         description: 'Success',
         type: FindIssuseResponseDto
     })
-    @Put('restore/issuseinfo/:issuse_id')
+    @Put('restore/issueinfo/:issue_id')
     @HttpCode(200)
-    async restoreProjectInfo(@Param('issuse_id') issuse_id: string, @Body() issuse: UpdateIssueDto): Promise<FindIssuseResponseDto> {
+    async restoreProjectInfo(@Param('issue_id') issuse_id: string, @Body() issuse: UpdateIssueDto): Promise<FindIssuseResponseDto> {
         return this.projectService.restoreIssuseInfo({
             where: { issuse_id: Number(issuse_id) },
             data: issuse,
@@ -80,9 +80,9 @@ export class IssuseController {
     @ApiOkResponse({
         description: 'Success',
     })
-    @Delete('delete/issuseinfo/:issuse_id')
+    @Delete('delete/issueinfo/:issue_id')
     @HttpCode(200)
-    async deleteFeature(@Param('issuse_id') issuse_id: string): Promise<any> {
+    async deleteFeature(@Param('issue_id') issuse_id: string): Promise<any> {
         return this.projectService.deleteIssuse({ issuse_id: Number(issuse_id) });
     }
 }
