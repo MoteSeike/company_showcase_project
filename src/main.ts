@@ -18,7 +18,7 @@ async function bootstrap() {
     .setContact("Hello world", "/test", "test@df.com")
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document, { customSiteTitle: "Student Register Backend", });
+  SwaggerModule.setup('api', app, document, { customSiteTitle: "Company ShowCase Backend", });
   app.enableCors({
     origin: '*',
     allowedHeaders: 'Origin,X-Requested-Width,Content-Type,Accept,'

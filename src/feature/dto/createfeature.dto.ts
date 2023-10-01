@@ -35,12 +35,6 @@ export class CreateFeatureDto {
             errorMessage: "Price is required."
         },
     })
-    @MinLength(0, {
-        context: {
-            errorCode: "E1000",
-            errorMessage: "Price must be at least 1 digit."
-        },
-    })
     @ApiProperty()
     price: number;
 

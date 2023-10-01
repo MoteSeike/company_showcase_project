@@ -1,23 +1,23 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from "class-validator";
 
-export class FindIssuseRequestDto {
+export class FindIssueRequestDto {
     @IsString({
         context: {
             errorCode: "E1000",
-            errorMessage: "Invalid Issuse Info Format."
+            errorMessage: "Invalid Issue Info Format."
         },
     })
     @IsNotEmpty({
         context: {
             errorCode: "E1000",
-            errorMessage: "Issuse Info is required."
+            errorMessage: "Issue Info is required."
         },
     })
     @MaxLength(70, {
         context: {
             errorCode: "E1000",
-            errorMessage: "Issuse Info can not more than 70 digits."
+            errorMessage: "Issue Info can not more than 70 digits."
         },
     })
     @ApiProperty()
@@ -84,16 +84,16 @@ export class FindIssuseResponseByProjectIdDto {
     project_name: string;
 
     @ApiProperty()
-    issuse_list:IssuseProperty[]
+    issue_list:IssuseProperty[]
 }
 
 export class IssuseProperty
 {
     @ApiProperty()
-    issuse_id:number;
+    issue_id:number;
 
     @ApiProperty()
-    issuse_info:string;
+    issue_info:string;
 
     @ApiProperty()
     status:string;
@@ -112,7 +112,7 @@ export class FindIssuseResponseDto
     issuse_id:number;
 
     @ApiProperty()
-    issuse_info:string;
+    issue_info:string;
 
     @ApiProperty()
     status:string;

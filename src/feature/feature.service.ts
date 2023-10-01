@@ -36,6 +36,7 @@ export class FeatureService {
                 const featuredto = new FeatureProperty();
                    featuredto.feature_id = a.feature_id;
                    featuredto.feature_name = a.feature_name;
+                   featuredto.price=a.price;
                     return featuredto;
                 });
                 const categorydata = await this.prisma.category.findUnique({

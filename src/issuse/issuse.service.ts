@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindIssuseResponseByProjectIdDto, FindIssuseResponseDto, IssuseProperty } from './dto/findissuse.dto';
-import { CreateIssuseDto } from './dto/createissuse.dto';
+import { CreateIssueDto } from './dto/createissuse.dto';
 import * as dayjs from 'dayjs';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
@@ -37,8 +37,8 @@ export class IssuseService {
 
             const responseissusedto: IssuseProperty[] = issusedata.map((a) => {
                 const issusedto = new IssuseProperty();
-                issusedto.issuse_id = a.issuse_id;
-                issusedto.issuse_info = a.issuse_info;
+                issusedto.issue_id = a.issuse_id;
+                issusedto.issue_info = a.issuse_info;
                 issusedto.status = a.status;
                 issusedto.user_id = a.user_id;
                 this.getUserData(a.user_id).then(res => issusedto.user_name = res);
@@ -53,7 +53,7 @@ export class IssuseService {
             const responsedata = new FindIssuseResponseByProjectIdDto;
             responsedata.project_id = project_id,
                 responsedata.project_name = projectdata.project_name,
-                responsedata.issuse_list = responseissusedto
+                responsedata.issue_list = responseissusedto
             return responsedata;
         }
         catch (err) {
@@ -111,7 +111,7 @@ export class IssuseService {
             const responseissusedto: FindIssuseResponseDto[] = issusedata.map((a) => {
                 const issusedto = new FindIssuseResponseDto();
                 issusedto.issuse_id = a.issuse_id;
-                issusedto.issuse_info = a.issuse_info;
+                issusedto.issue_info = a.issuse_info;
                 issusedto.status = a.status;
                 issusedto.user_id = a.user_id;
                 this.getUserData(a.user_id).then(res => issusedto.user_name = res);
@@ -138,18 +138,18 @@ export class IssuseService {
 
     }
 
-    async createIssuse(data: CreateIssuseDto): Promise<FindIssuseResponseDto> {
+    async createIssuse(data: CreateIssueDto): Promise<FindIssuseResponseDto> {
         try {
             const issusedata = await this.prisma.issue.findUnique({
-                where: { issuse_info: data.issuse_info },
+                where: { issuse_info: data.issue_info },
             });
             const restoreuserdata = await this.prisma.issue.findUnique({
-                where: { issuse_info: data.issuse_info, delete_status: 1 },
+                where: { issuse_info: data.issue_info, delete_status: 1 },
             });
             if (restoreuserdata) {
                 throw new HttpException({
                     errorCode: "E1118",
-                    errorMessage: "Your issuse info have been deleted."
+                    errorMessage: "Your issue info have been deleted."
                 },
                     HttpStatus.NOT_FOUND);
             }
@@ -157,14 +157,14 @@ export class IssuseService {
             if (issusedata) {
                 throw new HttpException({
                     errorCode: "E1117",
-                    errorMessage: "Issuse Info already exist!"
+                    errorMessage: "Issue Info already exist!"
                 },
                     HttpStatus.NOT_FOUND);
             }
             else {
                 const issuseresponse = await this.prisma.issue.create({
                     data: {
-                        issuse_info: data.issuse_info,
+                        issuse_info: data.issue_info,
                         delete_status: 0,
                         status: data.status,
                         registration_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
@@ -186,7 +186,7 @@ export class IssuseService {
                 });
                 issusedto.issuse_id = issuseresponse.issuse_id,
                     issusedto.project_id = issuseresponse.project_id,
-                    issusedto.issuse_info = issuseresponse.issuse_info,
+                    issusedto.issue_info = issuseresponse.issuse_info,
                     issusedto.status = issuseresponse.status,
                     issusedto.user_id = issuseresponse.user_id,
                     issusedto.user_name = userdata.user_name,
@@ -230,7 +230,7 @@ export class IssuseService {
             if (!issusedata) {
                 throw new HttpException({
                     errorCode: "E1117",
-                    errorMessage: "Issuse Info does not exist!"
+                    errorMessage: "Issue Info does not exist!"
                 },
                     HttpStatus.NOT_FOUND);
             }
@@ -252,7 +252,7 @@ export class IssuseService {
                         issuse_id: issusedata.issuse_id,
                         project_id: issusedata.project_id,
                         project_name:projectdata.project_name,
-                        issuse_info: issusedata.issuse_info,
+                        issue_info: issusedata.issuse_info,
                         status: issusedata.status,
                         user_id: issusedata.user_id,
                         user_name: userdata.user_name
@@ -294,7 +294,7 @@ export class IssuseService {
             if (!issusedata) {
                 throw new HttpException({
                     errorCode: "E1117",
-                    errorMessage: "Issuse Info does not exist!"
+                    errorMessage: "Issue Info does not exist!"
                 },
                     HttpStatus.NOT_FOUND);
             }
@@ -316,7 +316,7 @@ export class IssuseService {
                         issuse_id: issusedata.issuse_id,
                         project_id: issusedata.project_id,
                         project_name:projectdata.project_name,
-                        issuse_info: issusedata.issuse_info,
+                        issue_info: issusedata.issuse_info,
                         status: issusedata.status,
                         user_id: issusedata.user_id,
                         user_name: userdata.user_name
