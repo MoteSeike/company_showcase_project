@@ -5,6 +5,7 @@ import { FindIssuseResponseByProjectIdDto, FindIssuseResponseDto, IssuseProperty
 import { CreateIssueDto } from './dto/createissuse.dto';
 import * as dayjs from 'dayjs';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { UpdateIssueDto } from './dto/updateissuse.dto';
 
 @ApiBearerAuth()
 @Injectable()
@@ -210,16 +211,16 @@ export class IssuseService {
         }
     }
 
-    async updateIssuse(params: {
-        where: Prisma.IssueWhereUniqueInput;
-        data: Prisma.IssueUpdateInput;
-    }): Promise<FindIssuseResponseDto> {
-        const { where, data } = params;
+    async updateIssuse(issueId:string,
+        data:UpdateIssueDto
+    ): Promise<FindIssuseResponseDto> {
         try {
             const issusedata = await this.prisma.issue.update({
-                where,
+                where:{
+                    issuse_id:Number(issueId)
+                },
                 data: {
-                    issuse_info: data.issuse_info,
+                    issuse_info: data.issue_info,
                     delete_status: 0,
                     status: data.status,
                     updated_date: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
