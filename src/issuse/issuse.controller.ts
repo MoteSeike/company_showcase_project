@@ -3,8 +3,8 @@ import { IssuseService } from './issuse.service';
 import { FindIssuseResponseByProjectIdDto, FindIssuseResponseDto } from './dto/findissuse.dto';
 import { ApiBearerAuth, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
 import { AuthGuards } from 'src/auth/auth.guard';
-import { CreateIssuseDto } from './dto/createissuse.dto';
-import { UpdateIssuseDto } from './dto/updateissuse.dto';
+import { CreateIssueDto } from './dto/createissuse.dto';
+import { UpdateIssueDto } from './dto/updateissuse.dto';
 
 @ApiBearerAuth()
 @Controller('api/v1/issuse')
@@ -40,11 +40,11 @@ export class IssuseController {
     @HttpCode(201)
     @ApiOkResponse({
         description: 'Success',
-        type: CreateIssuseDto
+        type: CreateIssueDto
     })
     @ApiNotFoundResponse()
     @ApiInternalServerErrorResponse()
-    async createIssuse(@Body() issuse: CreateIssuseDto): Promise<any> {
+    async createIssuse(@Body() issuse: CreateIssueDto): Promise<any> {
         return this.projectService.createIssuse(issuse);
     }
 
@@ -55,7 +55,7 @@ export class IssuseController {
     })
     @Put('update/issuseinfo/:issuse_id')
     @HttpCode(200)
-    async updateProject(@Param('issuse_id') issuse_id: string, @Body() issuse: UpdateIssuseDto): Promise<FindIssuseResponseDto> {
+    async updateProject(@Param('issuse_id') issuse_id: string, @Body() issuse: UpdateIssueDto): Promise<FindIssuseResponseDto> {
         return this.projectService.updateIssuse({
             where: { issuse_id: Number(issuse_id) },
             data: issuse,
@@ -69,7 +69,7 @@ export class IssuseController {
     })
     @Put('restore/issuseinfo/:issuse_id')
     @HttpCode(200)
-    async restoreProjectInfo(@Param('issuse_id') issuse_id: string, @Body() issuse: UpdateIssuseDto): Promise<FindIssuseResponseDto> {
+    async restoreProjectInfo(@Param('issuse_id') issuse_id: string, @Body() issuse: UpdateIssueDto): Promise<FindIssuseResponseDto> {
         return this.projectService.restoreIssuseInfo({
             where: { issuse_id: Number(issuse_id) },
             data: issuse,

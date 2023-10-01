@@ -66,7 +66,7 @@ export class CategoryController {
         description: 'Success',
         type: FindCategoryResponseDto
     })
-    @Put('update/categoryinfo/:category_id')
+    @Put('restore/categoryinfo/:category_id')
     @HttpCode(200)
     async restoreCategoryInfo(@Param('category_id') category_id: string, @Body() category: UpdateCategoryDto): Promise<FindCategoryResponseDto> {
         return this.categoryService.restoreCategoryInfo({
